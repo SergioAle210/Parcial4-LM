@@ -9,7 +9,7 @@ class TuringMachine:
         blank_symbol="_",
     ):
         # Agrega "x" al inicio de la cinta para indicar el punto de inicio
-        self.tape = list("x" + tape)
+        self.tape = list(tape)
         self.head = 1  # Posición inicial del cabezal de lectura/escritura
         self.transitions = transitions
         self.current_state = initial_state
