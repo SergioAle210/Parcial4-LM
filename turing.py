@@ -29,8 +29,12 @@ class TuringMachine:
         action = self.transitions.get((self.current_state, symbol))
 
         if action is None:
+            # Si no hay transición, ir al estado de rechazo
+            print(
+                f"Transición no definida para estado '{self.current_state}' y símbolo '{symbol}'. Rechazado."
+            )
             self.current_state = self.reject_state
-            return False  # Rechaza si no hay transición definida
+            return False
 
         # Ejecuta la acción: escribe, mueve el cabezal, y cambia de estado
         new_symbol, direction, new_state = action
@@ -89,20 +93,36 @@ class TuringMachine:
         return self.current_state == self.accept_state
 
 
-# Ejemplo de configuración para una máquina de Turing simple con desplazamiento a la derecha
+# Entrada del usuario
 tape = input("Por favor, ingrese la cadena a evaluar: ")
+
+# Definición de las transiciones de la máquina de Turing
 transitions = {
     ("q0", "0"): ("0", "R", "q0"),
     ("q0", "1"): ("1", "R", "q0"),
     ("q0", "x"): ("x", "R", "q0"),
-    ("q0", "_"): ("_", "L", "q1"),
-    ("q1", "_"): ("_", "L", "q1"),
-    ("q1", "0"): ("_", "R", "q2"),
-    ("q1", "1"): ("_", "R", "q3"),
-    ("q2", "_"): ("0", "L", "q1"),
-    ("q3", "_"): ("1", "L", "q1"),
-    ("q1", "x"): ("_", "L", "q_accept"),  # Elimina la "x" al final del desplazamiento
+    ("q0", "_"): (
+        "_",
+        "L",
+        "q1",
+    ),  # Moverse a la izquierda si encuentra el símbolo en blanco después de leer todos los caracteres
+    ("q1", "0"): ("_", "R", "q2"),  # Borra "0" y avanza
+    ("q1", "1"): ("_", "R", "q3"),  # Borra "1" y avanza
+    ("q1", "x"): ("_", "L", "q_accept"),  # Elimina "x" y acepta
+    ("q2", "_"): ("0", "L", "q1"),  # Reemplaza "_" con "0" y vuelve al inicio
+    ("q3", "_"): ("1", "L", "q1"),  # Reemplaza "_" con "1" y vuelve al inicio
+    ("q1", "_"): ("_", "L", "q1"),  # Retrocede para verificar la eliminación
 }
+
+# Transiciones para caracteres no válidos: van al estado de rechazo
+invalid_symbols = set(
+    "abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWYZ23456789"
+)  # Se pueden agregar más caracteres si es necesario
+for symbol in invalid_symbols:
+    transitions[("q0", symbol)] = (symbol, "R", "q_reject")
+    transitions[("q1", symbol)] = (symbol, "R", "q_reject")
+    transitions[("q2", symbol)] = (symbol, "R", "q_reject")
+    transitions[("q3", symbol)] = (symbol, "R", "q_reject")
 
 tm = TuringMachine(
     tape=tape,
