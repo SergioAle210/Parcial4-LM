@@ -10,7 +10,7 @@ class TuringMachine:
     ):
         # Agrega "x" al inicio de la cinta para indicar el punto de inicio
         self.tape = list("x" + tape)
-        self.head = 0  # Posición inicial del cabezal de lectura/escritura
+        self.head = 1  # Posición inicial del cabezal de lectura/escritura
         self.transitions = transitions
         self.current_state = initial_state
         self.accept_state = accept_state
@@ -105,13 +105,13 @@ transitions = {
         "_",
         "L",
         "q1",
-    ),  # Moverse a la izquierda si encuentra el símbolo en blanco después de leer todos los caracteres
+    ),
     ("q1", "0"): ("_", "R", "q2"),  # Borra "0" y avanza
     ("q1", "1"): ("_", "R", "q3"),  # Borra "1" y avanza
     ("q1", "x"): ("_", "L", "q_accept"),  # Elimina "x" y acepta
     ("q2", "_"): ("0", "L", "q1"),  # Reemplaza "_" con "0" y vuelve al inicio
     ("q3", "_"): ("1", "L", "q1"),  # Reemplaza "_" con "1" y vuelve al inicio
-    ("q1", "_"): ("_", "L", "q1"),  # Retrocede para verificar la eliminación
+    ("q1", "_"): ("_", "L", "q1"),
 }
 
 # Transiciones para caracteres no válidos: van al estado de rechazo
