@@ -1,0 +1,12 @@
+Estado inicial de la cinta:
+q0 a a a a a a
+a q1 a a a a a
+a a q1 a a a a
+a a a q1 a a a
+a a a a q1 a a
+a a a a a q1 a
+a a a a a a q1
+a a a a a a a q1
+a a a a a a a _ qreject
+
+Resultado: Rejected
