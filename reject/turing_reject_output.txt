@@ -1,14 +1,14 @@
 Estado inicial de la cinta:
-q0 a a a b b a a a
-a q1 a a b b a a a
-a a q1 a b b a a a
-a a a q1 b b a a a
-a a a a q1 b a a a
-a a a a b q2 a a a
-a a a a b b qloop a a
-a a a a b b a q1 a
-a a a a b b a a q1
-a a a a b b a a a q1
-a a a a b b a a a _ qreject
+q0 a a a a b b a a a
+a q1 a a a b b a a a
+a a q1 a a b b a a a
+a a a q1 a b b a a a
+a a a a q1 b b a a a
+a a a a b q2 b a a a
+a a a a b b qloop a a a
+a a a a b b a q1 a a
+a a a a b b a a q1 a
+a a a a b b a a a q1 _
+a a a a b b a a a _ qreject _
 
 Resultado: Rejected
