@@ -1,0 +1,21 @@
+{
+    "initial_state": "q0",
+    "accept_state": "qaccept",
+    "reject_state": "qreject",
+    "blank_symbol": "_",
+    "transitions": {
+      "q0,a": ["a", "R", "q1"],
+      "q0,b": ["b", "R", "qloop"],
+      "q0,_": ["_", "R", "qreject"],
+      "q1,a": ["a", "R", "q1"],
+      "q1,b": ["b", "R", "q2"],
+      "q1,_": ["_", "R", "qreject"],
+      "q2,a": ["a", "R", "qaccept"],
+      "q2,b": ["b", "R", "qloop"],
+      "q2,_": ["_", "R", "qloop"],
+      "qloop,a": ["a", "R", "q1"],
+      "qloop,b": ["b", "R", "qloop"],
+      "qloop,_": ["_", "R", "qloop"]
+    }
+  }
+  

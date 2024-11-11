@@ -1,5 +1,6 @@
 import os
 from colorama import init, Fore, Style
+import json
 
 # Inicializa colorama para Windows
 init(autoreset=True)
@@ -17,7 +18,9 @@ class TuringMachine:
     ):
         self.tape = list(tape)  # Cinta de entrada
         self.head = 0  # Posición inicial del cabezal de lectura/escritura
-        self.transitions = transitions  # Tabla de transiciones
+        self.transitions = {
+            tuple(key.split(",")): tuple(value) for key, value in transitions.items()
+        }  # Tabla de transiciones
         self.current_state = initial_state  # Estado inicial
         self.accept_state = accept_state  # Estado de aceptación
         self.reject_state = reject_state  # Estado de rechazo
@@ -121,6 +124,19 @@ def save_input_to_file(directory, filename, tape):
     )
 
 
+def load_machine_config(filename="turing_config.json"):
+    """Carga la configuración de la máquina desde un archivo JSON."""
+    with open(filename, "r") as file:
+        config = json.load(file)
+    return (
+        config["initial_state"],
+        config["accept_state"],
+        config["reject_state"],
+        config["blank_symbol"],
+        config["transitions"],
+    )
+
+
 def run_predefined_test(
     input_string,
     output_dir,
@@ -185,23 +201,9 @@ def show_machine_description():
 
 def main_menu():
     """Menú principal para ejecutar la máquina de Turing con opciones predefinidas o ingresadas por el usuario."""
-    transitions = {
-        ("q0", "a"): ("a", "R", "q1"),
-        ("q0", "b"): ("b", "R", "qloop"),
-        ("q0", "_"): ("_", "R", "qreject"),
-        ("q1", "a"): ("a", "R", "q1"),
-        ("q1", "b"): ("b", "R", "q2"),
-        ("q1", "_"): ("_", "R", "qreject"),
-        ("q2", "a"): ("a", "R", "qaccept"),
-        ("q2", "b"): ("b", "R", "qloop"),
-        ("q2", "_"): ("_", "R", "qloop"),
-        ("qloop", "a"): ("a", "R", "q1"),
-        ("qloop", "b"): ("b", "R", "qloop"),
-        ("qloop", "_"): ("_", "R", "qloop"),
-    }
-    initial_state = "q0"
-    accept_state = "qaccept"
-    reject_state = "qreject"
+    initial_state, accept_state, reject_state, blank_symbol, transitions = (
+        load_machine_config()
+    )
 
     while True:
         print(f"{Fore.MAGENTA}\n--- Menú de la Máquina de Turing ---{Style.RESET_ALL}")
