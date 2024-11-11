@@ -150,7 +150,7 @@ def show_machine_description():
 
     print(f"{Fore.YELLOW}Componentes de la Máquina de Turing (M):{Style.RESET_ALL}")
     print(
-        f"{Fore.CYAN}Q{Style.RESET_ALL} = {{q0, q1, q2, qaccept, qreject}}  # Conjunto de estados"
+        f"{Fore.CYAN}Q{Style.RESET_ALL} = {{q0, q1, q2, qloop, qaccept, qreject}}  # Conjunto de estados"
     )
     print(f"{Fore.CYAN}Alfabeto{Style.RESET_ALL} = {{a, b}}  # Alfabeto de entrada")
     print(
@@ -159,35 +159,45 @@ def show_machine_description():
 
     print(f"{Fore.YELLOW}Función de Transición (S):{Style.RESET_ALL}")
     print(
-        """
+        f"""
         S(q0, a) = (a, R, q1)
-        S(q0, b) = (b, R, q0)
+        S(q0, b) = (b, R, qloop)
         S(q0, _) = (_, R, qreject)
+        
         S(q1, a) = (a, R, q1)
         S(q1, b) = (b, R, q2)
         S(q1, _) = (_, R, qreject)
-        S(q2, b) = (b, R, q0)
+        
         S(q2, a) = (a, R, qaccept)
-        S(q2, _) = (_, R, qreject)
-    """
+        S(q2, b) = (b, R, qloop)
+        S(q2, _) = (_, R, qloop)
+        
+        S(qloop, a) = (a, R, q1)
+        S(qloop, b) = (b, R, qloop)
+        S(qloop, _) = (_, R, qloop)
+        """
     )
     print(f"{Fore.YELLOW}q0{Style.RESET_ALL} = Estado inicial")
     print(f"{Fore.YELLOW}qaccept{Style.RESET_ALL} = Estado de aceptación")
-    print(f"{Fore.YELLOW}qreject{Style.RESET_ALL} = Estado de rechazo\n")
+    print(f"{Fore.YELLOW}qreject{Style.RESET_ALL} = Estado de rechazo")
+    print(f"{Fore.YELLOW}qloop{Style.RESET_ALL} = Estado de ciclo infinito\n")
 
 
 def main_menu():
     """Menú principal para ejecutar la máquina de Turing con opciones predefinidas o ingresadas por el usuario."""
     transitions = {
         ("q0", "a"): ("a", "R", "q1"),
-        ("q0", "b"): ("b", "R", "q0"),
+        ("q0", "b"): ("b", "R", "qloop"),
         ("q0", "_"): ("_", "R", "qreject"),
         ("q1", "a"): ("a", "R", "q1"),
         ("q1", "b"): ("b", "R", "q2"),
         ("q1", "_"): ("_", "R", "qreject"),
-        ("q2", "b"): ("b", "R", "q0"),
         ("q2", "a"): ("a", "R", "qaccept"),
-        ("q2", "_"): ("_", "R", "qreject"),
+        ("q2", "b"): ("b", "R", "qloop"),
+        ("q2", "_"): ("_", "R", "qloop"),
+        ("qloop", "a"): ("a", "R", "q1"),
+        ("qloop", "b"): ("b", "R", "qloop"),
+        ("qloop", "_"): ("_", "R", "qloop"),
     }
     initial_state = "q0"
     accept_state = "qaccept"
@@ -237,7 +247,7 @@ def main_menu():
                 f"{Fore.MAGENTA}\n--- Resultado de 'reject_input' ---{Style.RESET_ALL}"
             )
             run_predefined_test(
-                "abbbaaaaaaa",
+                "bbbbba",
                 "reject",
                 "turing_reject_input.txt",
                 "turing_reject_output.txt",
@@ -252,7 +262,7 @@ def main_menu():
                 f"{Fore.MAGENTA}\n--- Resultado de 'infinite_input' ---{Style.RESET_ALL}"
             )
             run_predefined_test(
-                "aaaaaaa",
+                "bbbbbab",
                 "infinite",
                 "turing_infinite_input.txt",
                 "turing_infinite_output.txt",
