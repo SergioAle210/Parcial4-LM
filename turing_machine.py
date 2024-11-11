@@ -86,7 +86,7 @@ class TuringMachine:
         elif self.current_state == self.reject_state:
             result = f"{Fore.RED}Rejected{Style.RESET_ALL}"
         else:
-            result = f"{Fore.YELLOW}Ciclo Infinito (Límite de pasos alcanzado){Style.RESET_ALL}"
+            result = f"{Fore.YELLOW}Ciclo Infinito (Límite de pasos alcanzado){Style.RESET_ALL} - {Fore.RED}Rejected{Style.RESET_ALL}"
 
         output_lines.append(f"\nResultado: {result}")
 
