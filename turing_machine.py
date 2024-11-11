@@ -62,14 +62,11 @@ class TuringMachine:
 
     def display_tape(self):
         """Imprime la cinta mostrando el estado actual en la posición del cabezal."""
-        tape_with_state = [
-            (
-                f"{Fore.BLUE}{self.current_state}{Style.RESET_ALL}"
-                if i == self.head
-                else char
-            )
-            for i, char in enumerate(self.tape)
-        ]
+        tape_with_state = self.tape[:]
+        # Inserta el estado actual en la posición del cabezal sin remover el carácter original
+        tape_with_state[self.head] = (
+            f"{Fore.BLUE}{self.current_state}{Style.RESET_ALL} {self.tape[self.head]}"
+        )
         return " ".join(map(str, tape_with_state))
 
     def run(self, output_file=None, step_limit=100):
