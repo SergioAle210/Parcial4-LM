@@ -247,7 +247,7 @@ def main_menu():
                 f"{Fore.MAGENTA}\n--- Resultado de 'reject_input' ---{Style.RESET_ALL}"
             )
             run_predefined_test(
-                "bbbbba",
+                "aaaabbaaa",
                 "reject",
                 "turing_reject_input.txt",
                 "turing_reject_output.txt",
